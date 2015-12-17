@@ -1,0 +1,132 @@
+[
+  {
+    "name": "Aphrodite",
+    "birth": {
+      "date": {
+        "$date": "1997-05-13T22:00:00.000Z"
+      },
+      "place": "on a mountain"
+    },
+    "is worth dying for": true,
+    "hair length": 45.3795373395551,
+    "friends": [
+      "Demeter"
+    ]
+  },
+  {
+    "name": "Athena",
+    "birth": {
+      "date": {
+        "$date": "2006-03-25T23:00:00.000Z"
+      },
+      "place": "in the sea"
+    },
+    "is worth dying for": true,
+    "hair length": 39.58311117766425,
+    "friends": [
+      "Little John",
+      "Hera"
+    ]
+  },
+  {
+    "name": "Artemis",
+    "birth": {
+      "date": {
+        "$date": "1988-05-21T22:00:00.000Z"
+      },
+      "place": "at home"
+    },
+    "is worth dying for": false,
+    "hair length": 94.15762331243604,
+    "friends": [
+      "Eros",
+      "BB King"
+    ]
+  },
+  {
+    "name": "Hera",
+    "birth": {
+      "date": {
+        "$date": "1998-03-17T23:00:00.000Z"
+      },
+      "place": "in the sea"
+    },
+    "is worth dying for": false,
+    "hair length": 23.585341901984066
+  },
+  {
+    "name": "Maria",
+    "birth": {
+      "date": {
+        "$date": "1995-09-26T23:00:00.000Z"
+      },
+      "place": "in the sea"
+    },
+    "is worth dying for": false,
+    "hair length": 32.77195656276308
+  },
+  {
+    "name": "Demeter",
+    "birth": {
+      "date": {
+        "$date": "1997-01-11T23:00:00.000Z"
+      },
+      "place": "in the sea"
+    },
+    "is worth dying for": true,
+    "hair length": 32.071474781259894,
+    "friends": [
+      "Jesus"
+    ]
+  },
+  {
+    "name": "Eros",
+    "birth": {
+      "date": {
+        "$date": "1986-02-24T23:00:00.000Z"
+      },
+      "place": "on a mountain"
+    },
+    "is worth dying for": false,
+    "hair length": 7.576114816125482,
+    "friends": [
+      "Athena"
+    ]
+  },
+  {
+    "name": "Jesus",
+    "birth": {
+      "date": {
+        "$date": "1988-12-21T23:00:00.000Z"
+      },
+      "place": "in my brain"
+    },
+    "is worth dying for": false,
+    "hair length": 72.96312306262553
+  },
+  {
+    "name": "Little John",
+    "birth": {
+      "date": {
+        "$date": "2009-04-05T22:00:00.000Z"
+      },
+      "place": "in the sea"
+    },
+    "is worth dying for": true,
+    "hair length": 11.697664296021685,
+    "friends": [
+      "Hera"
+    ]
+  },
+  {
+    "name": "BB King",
+    "birth": {
+      "date": {
+        "$date": "1990-11-27T23:00:00.000Z"
+      },
+      "place": "at home"
+    },
+    "is worth dying for": true,
+    "hair length": 76.5002778924536
+  }
+]
