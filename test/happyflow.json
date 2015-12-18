@@ -1,0 +1,41 @@
+[
+  {
+    "suite": "fieldnames",
+    "tests": [
+      {
+        "test": "in embedded document",
+        "hrq": "place of birth is \"in my brain\"",
+        "mongoq": {
+          "birth.place": "in my brain"
+        },
+        "result": [
+          "Jesus"
+        ]
+      },
+      {
+        "test": "in embedded document using dot notation",
+        "hrq": "birth.place is \"in my brain\"",
+        "mongoq": {
+          "birth.place": "in my brain"
+        },
+        "result": [
+          "Jesus"
+        ]
+      },
+      {
+        "test": "with spaces",
+        "hrq": "\"is worth dying for\" is true",
+        "mongoq": {
+          "is worth dying for": true
+        },
+        "result": [
+          "Aphrodite",
+          "Athena",
+          "BB King",
+          "Demeter",
+          "Little John"
+        ]
+      }
+    ]
+  }
+]

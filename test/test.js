@@ -1,9 +1,9 @@
 var expect    = require("chai").expect;
 var hrq2mongoq = require("../lib");
-var tests = require("./tests");
+var happyflowsuites = require("./happyflow");
 
 var runTest = function (test, useDB) {
-    it(test.description, function (done) {
+    it(test.test, function (done) {
         var mongoq = hrq2mongoq.parse(test.hrq);
         expect(mongoq).to.eql(JSON.parse(JSON.stringify(test.mongoq), hrq2mongoq.dateReviver));
 
@@ -30,8 +30,16 @@ var runTest = function (test, useDB) {
 };
 
 var runTests = function(useDB) {
-    tests.forEach(function(test) {
-        runTest(test, useDB);
+    happyflowsuites.forEach(function(suite) {
+        runSuite(suite, useDB);
+    });
+};
+
+var runSuite = function(suite, useDB) {
+    describe(suite.suite, function() {
+        suite.tests.forEach(function (test) {
+            runTest(test, useDB);
+        });
     });
 };
 
