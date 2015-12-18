@@ -1,6 +1,6 @@
 {
   "name": "hrq2mongoq",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/index.js",
   "keywords": ["mongo", "query", "parser"],
   "author": {
@@ -8,6 +8,9 @@
     "email": "david@debos.eu",
     "url": "http://www.debos.eu/"
   },
+  "files": [
+    "lib"
+  ],
   "license": "MIT",
   "scripts": {
     "prepublish": "rm -f lib/hrq-parser.js && pegjs src/hrq-grammar.pegjs lib/hrq-parser.js",
