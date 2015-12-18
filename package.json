@@ -2,13 +2,23 @@
   "name": "hrq2mongoq",
   "version": "0.0.1",
   "main": "lib/index.js",
-  "private": true,
+  "keywords": ["mongo", "query", "parser"],
+  "author": {
+    "name": "David de Bos",
+    "email": "david@debos.eu",
+    "url": "http://www.debos.eu/"
+  },
+  "license": "MIT",
   "scripts": {
     "prepublish": "rm -f lib/hrq-parser.js && pegjs src/hrq-grammar.pegjs lib/hrq-parser.js",
     "test": "npm run-script prepublish && mocha -R spec -f \"without DB\"",
     "testWithDB": "npm run-script initTestDB && npm run-script prepublish && mocha -R spec -f \"with DB\" && npm run-script clearTestDB",
     "initTestDB": "npm run-script clearTestDB && mongoimport -d test -c hrqTestData test/testdata.json --jsonArray",
     "clearTestDB": "mongo -eval \"db.hrqTestData.drop()\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://debos@bitbucket.org/debos/hrq2mongoq.git"
   },
   "dependencies": {},
   "devDependencies": {

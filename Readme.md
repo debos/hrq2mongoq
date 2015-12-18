@@ -1,6 +1,8 @@
 Human Readable Query to Mongo Query (hrq2mongoq)
 ================================================
 
+NOTE: THIS PROJECT IS STILL WORK IN PROGRESS.
+
 hrq2mongoq lets you formulate MongoDB queries in a human readable way by 
 transforming HRQs (human readably queries) into MongoDB queries.
 
@@ -78,3 +80,8 @@ object, which is the number of milliseconds from 1 January 1970 00:00:00 UTC.
 #### Booleans
 
 The literals `true` and `false` can be used to represent boolean values.
+
+Development
+-----------
+hrq2mongoq is developed by [David de Bos](http://www.debos.eu).
+It is still work in progress.
