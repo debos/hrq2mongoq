@@ -1,6 +1,6 @@
 {
   "name": "hrq2mongoq",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "lib/index",
   "keywords": ["mongo", "query", "parser"],
   "author": {
@@ -28,7 +28,7 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.3",
-    "mongodb": "^2.0.52",
+    "mongodb": "^2.1.0",
     "pegjs": "^0.9.0"
   }
 }

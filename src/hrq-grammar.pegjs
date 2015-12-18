@@ -62,8 +62,8 @@ both = __ 'both' / _ ':'
 
 condition
 = '(' _ expression:expression _ ')' {return expression;}
-/ left:fieldid both right:andlist {var result = '"$and": ['; right.split(';').forEach(function(item){result += '{' + left + ': ' + item + '},';});  return result.substr(0,result.length-1) + ']';}
-/ left:fieldid either right:orlist {var result = '"$or": ['; right.split(';').forEach(function(item){result += '{' + left + ': ' + item + '},';});  return result.substr(0,result.length-1) + ']';}
+/ left:fieldid both right:andlist {var result = '{"$and": ['; right.split(';').forEach(function(item){result += '{' + left + ': ' + item + '},';});  return result.substr(0,result.length-1) + ']}';}
+/ left:fieldid either right:orlist {var result = '{"$or": ['; right.split(';').forEach(function(item){result += '{' + left + ': ' + item + '},';});  return result.substr(0,result.length-1) + ']}';}
 / left:fieldid right:valueexpr {return '{' + left + ': ' + right + '}';}
 
 valueexpr
@@ -82,7 +82,7 @@ valueexpr
 / matches string:string {return '{"$regex" : "' + string.substring(1,string.length-1) + '"}';}
 
 is  = __ 'is' __ / _ '=' _
-not = __ 'is not' __ / _ '!' _
+not = __ 'is not' __ / _ '!=' _
 lt  = __ 'is less than' __ / _ '<' _
 gt  = __ 'is greater than' __ / _ '>' _
 lte  = __ 'is equal or less than' __ / _ '=<' _ / _ '<=' _
