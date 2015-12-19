@@ -1,6 +1,6 @@
 var expect    = require("chai").expect;
 var hrq2mongoq = require("../lib");
-var happyflowsuites = require("./happyflow");
+var happyflowtests = require("./happyflow");
 
 var runTest = function (test, useDB) {
     it(test.test, function (done) {
@@ -18,7 +18,11 @@ var runTest = function (test, useDB) {
                         {$group: {"_id": null, "result": {$push: "$name"}}}
                     ], function (err, result) {
                         if (err) done(err);
-                        expect(result[0].result).to.eql(test.result);
+                        if (result.length > 0) {
+                            expect(result[0].result).to.eql(test.result);
+                        } else {
+                            expect([]).to.eql(test.result);
+                        }
                         db.close();
                         done();
                     });
@@ -30,18 +34,15 @@ var runTest = function (test, useDB) {
 };
 
 var runTests = function(useDB) {
-    happyflowsuites.forEach(function(suite) {
-        runSuite(suite, useDB);
+    happyflowtests.forEach(function(test) {
+        runTest(test, useDB);
     });
 };
 
-var runSuite = function(suite, useDB) {
-    describe(suite.suite, function() {
-        suite.tests.forEach(function (test) {
-            runTest(test, useDB);
-        });
-    });
-};
+describe("hr2mongoq (with DB verification)", function () {
+    runTests(true)
+});
 
-describe("hr2mongoq (with DB verification)", function() {runTests(true)});
-describe("hr2mongoq (without DB verification)", function() {runTests(false)});
+describe("hr2mongoq (without DB verification)", function () {
+    runTests(false)
+});

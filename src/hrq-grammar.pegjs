@@ -91,10 +91,10 @@ from = __ 'ranges from' __ / _ '{}=' _
 to = __ 'to' __ / _ '-' _
 exists  = __ 'exists' / _ '*'
 notexists  = __ 'does not exist' / _ '^'
-startswith  = __ 'starts with' __ / __ 'start=' _
-endswith  = __ 'ends with' __ / __ 'end=' _
-contains  = __ 'contains' __ / __ 'text=' _
-matches  = __ 'matches' __ / __ 'regex=' _
+startswith  = __ 'starts with' __ / _ '$start=' _
+endswith  = __ 'ends with' __ / _ '$end=' _
+contains  = __ 'contains' __ / _ '$contains=' _
+matches  = __ 'matches' __ / _ '$regex=' _
 
 _ 'whitespace'  = [ \n\t\r]*
 __ 'whitespace' = [ \n\t\r]+
@@ -110,12 +110,12 @@ dot = '.'
 
 field = nodollar chars:notreserved* {return chars.join('');}
 nodollar = !"$"
-notreserved = [^:{}"'=<>&!*\^., \n\t\r]
+notreserved = [^:${}"'=<>&!*\^., \n\t\r]
 
 value 'value'  = datevalue / number / boolean /  string
 number  = float / integer
 boolean = "true" / "false"
-string  = sqstring / dqstring
+string  = dqstring
 
 float
 = whole:integer '.' partial:digits {
@@ -155,18 +155,6 @@ month   = "0" ones:[1-9] { return "0" + ones;} / "1" ones:[0-2] { return "1" + o
 day     = "3" ones:[0-1] { return "3" + ones; } / tens:[0-2] ones:digit { return tens + ones; }
 hours   = "2" ones:[0-4] { return "2" + ones; } / tens:[0-1] ones:digit { return tens + ones; }
 minutes = tens:[0-5] ones:digit { return tens + ones; }
-
-sqstring
-    = "'" text:(!squote .)* last:squote {
-	var result = "";
-	for (var c in text) {
-	    result += text[c][1];
-	}
-	return "'" + result + last + "'";
-    }
-
-squote
-    = last:[^\\] "'" {return last;}
 
 dqstring
     = '"' text:(!dquote .)* last:dquote {

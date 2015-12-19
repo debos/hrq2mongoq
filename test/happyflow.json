@@ -1,41 +1,542 @@
 [
   {
-    "suite": "fieldnames",
-    "tests": [
-      {
-        "test": "in embedded document",
-        "hrq": "place of birth is \"in my brain\"",
-        "mongoq": {
-          "birth.place": "in my brain"
-        },
-        "result": [
-          "Jesus"
-        ]
-      },
-      {
-        "test": "in embedded document using dot notation",
-        "hrq": "birth.place is \"in my brain\"",
-        "mongoq": {
-          "birth.place": "in my brain"
-        },
-        "result": [
-          "Jesus"
-        ]
-      },
-      {
-        "test": "with spaces",
-        "hrq": "\"is worth dying for\" is true",
-        "mongoq": {
-          "is worth dying for": true
-        },
-        "result": [
-          "Aphrodite",
-          "Athena",
-          "BB King",
-          "Demeter",
-          "Little John"
-        ]
-      }
+    "test": "basic equality",
+    "hrq": "name is \"Athena\"",
+    "mongoq": {
+      "name": "Athena"
+    },
+    "result": [
+      "Athena"
     ]
+  },
+  {
+    "test": "field name with spaces",
+    "hrq": "\"hair length\" is 40",
+    "mongoq": {
+      "hair length": 40
+    },
+    "result": []
+  },
+  {
+    "test": "both operator",
+    "hrq": "name both starts with \"A\", contains \"then\" and ends with \"a\"",
+    "mongoq": {
+      "$and": [
+        {
+          "name": {
+            "$regex": "^A"
+          }
+        },
+        {
+          "name": {
+            "$regex": "then"
+          }
+        },
+        {
+          "name": {
+            "$regex": "a$"
+          }
+        }
+      ]
+    },
+    "result": [
+      "Athena"
+    ]
+  },
+  {
+    "test": "both operator with symbols",
+    "hrq": "name:$start=\"A\"&$contains=\"then\"&$end=\"a\"",
+    "mongoq": {
+      "$and": [
+        {
+          "name": {
+            "$regex": "^A"
+          }
+        },
+        {
+          "name": {
+            "$regex": "then"
+          }
+        },
+        {
+          "name": {
+            "$regex": "a$"
+          }
+        }
+      ]
+    },
+    "result": [
+      "Athena"
+    ]
+  },
+  {
+    "test": "either operator",
+    "hrq": "friends either is \"Demeter\" or does not exist",
+    "mongoq": {
+      "$or": [
+        {
+          "friends": "Demeter"
+        },
+        {
+          "friends": {
+            "$exists": false
+          }
+        }
+      ]
+    },
+    "result": [
+      "Aphrodite",
+      "BB King",
+      "Hera",
+      "Jesus",
+      "Maria"
+    ]
+  },
+  {
+    "test": "either operator with symbols",
+    "hrq": "friends:=\"Demeter\"|^",
+    "mongoq": {
+      "$or": [
+        {
+          "friends": "Demeter"
+        },
+        {
+          "friends": {
+            "$exists": false
+          }
+        }
+      ]
+    },
+    "result": [
+      "Aphrodite",
+      "BB King",
+      "Hera",
+      "Jesus",
+      "Maria"
+    ]
+  },
+  {
+    "test": "and operator with symbols",
+    "hrq": "friends=\"Demeter\"&\"hair length\"<50",
+    "mongoq": {
+      "$and": [
+        {
+          "friends": "Demeter"
+        },
+        {
+          "hair length": {
+            "$lt": 50
+          }
+        }
+      ]
+    },
+    "result": [
+      "Aphrodite"
+    ]
+  },
+  {
+    "test": "and operator",
+    "hrq": "friends is \"Demeter\" and \"hair length\" is less than 50",
+    "mongoq": {
+      "$and": [
+        {
+          "friends": "Demeter"
+        },
+        {
+          "hair length": {
+            "$lt": 50
+          }
+        }
+      ]
+    },
+    "result": [
+      "Aphrodite"
+    ]
+  },
+  {
+    "test": "or operator",
+    "hrq": "friends is \"Demeter\" or \"hair length\" is less than 50",
+    "mongoq": {
+      "$or": [
+        {
+          "friends": "Demeter"
+        },
+        {
+          "hair length": {
+            "$lt": 50
+          }
+        }
+      ]
+    },
+    "result": [
+      "Aphrodite",
+      "Athena",
+      "Demeter",
+      "Eros",
+      "Hera",
+      "Little John",
+      "Maria"
+    ]
+  },
+  {
+    "test": "or operator with symbols",
+    "hrq": "friends=\"Demeter\"|\"hair length\"<50",
+    "mongoq": {
+      "$or": [
+        {
+          "friends": "Demeter"
+        },
+        {
+          "hair length": {
+            "$lt": 50
+          }
+        }
+      ]
+    },
+    "result": [
+      "Aphrodite",
+      "Athena",
+      "Demeter",
+      "Eros",
+      "Hera",
+      "Little John",
+      "Maria"
+    ]
+  },
+  {
+    "test": "nor operator",
+    "hrq": "friends is \"Demeter\" nor \"hair length\" is less than 50",
+    "mongoq": {
+      "$nor": [
+        {
+          "friends": "Demeter"
+        },
+        {
+          "hair length": {
+            "$lt": 50
+          }
+        }
+      ]
+    },
+    "result": [
+      "Artemis",
+      "BB King",
+      "Jesus"
+    ]
+  },
+  {
+    "test": "parentheses1",
+    "hrq": "(name is \"Hera\" and friends does not exist) or \"hair length\" > 90",
+    "mongoq": {
+      "$or": [
+        {
+          "$and": [
+            {
+              "name": "Hera"
+            },
+            {
+              "friends": {
+                "$exists": false
+              }
+            }
+          ]
+        },
+        {
+          "hair length": {
+            "$gt": 90
+          }
+        }
+      ]
+    },
+    "result": [
+      "Artemis",
+      "Hera"
+    ]
+  },
+  {
+    "test": "parentheses2",
+    "hrq": "name is \"Hera\" and (friends does not exist or \"hair length\" > 90)",
+    "mongoq": {
+      "$and": [
+        {
+          "name": "Hera"
+        },
+        {
+          "$or": [
+            {
+              "friends": {
+                "$exists": false
+              }
+            },
+            {
+              "hair length": {
+                "$gt": 90
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "result": [
+      "Hera"
+    ]
+  },
+  {
+    "test": "range operator",
+    "hrq": "\"hair length\" ranges from 70 to 90",
+    "mongoq": {
+      "hair length": {
+        "$gte": 70,
+        "$lte": 90
+      }
+    },
+    "result": [
+      "BB King",
+      "Jesus"
+    ]
+  },
+  {
+    "test": "range operator with symbols",
+    "hrq": "\"hair length\"{}=70-90",
+    "mongoq": {
+      "hair length": {
+        "$gte": 70,
+        "$lte": 90
+      }
+    },
+    "result": [
+      "BB King",
+      "Jesus"
+    ]
+  },
+  {
+    "test": "matches operator",
+    "hrq": "name matches \"r.*i\"",
+    "mongoq": {
+      "name": {
+        "$regex": "r.*i"
+      }
+    },
+    "result": [
+      "Aphrodite",
+      "Artemis",
+      "Maria"
+    ]
+  },
+  {
+    "test": "regex operator",
+    "hrq": "name$regex=\"r.*i\"",
+    "mongoq": {
+      "name": {
+        "$regex": "r.*i"
+      }
+    },
+    "result": [
+      "Aphrodite",
+      "Artemis",
+      "Maria"
+    ]
+  },
+  {
+    "test": "exists operator",
+    "hrq": "friends exists",
+    "mongoq": {
+      "friends": {
+        "$exists": true
+      }
+    },
+    "result": [
+      "Aphrodite",
+      "Artemis",
+      "Athena",
+      "Demeter",
+      "Eros",
+      "Little John"
+    ]
+  },
+  {
+    "test": "exists operator with symbol",
+    "hrq": "friends*",
+    "mongoq": {
+      "friends": {
+        "$exists": true
+      }
+    },
+    "result": [
+      "Aphrodite",
+      "Artemis",
+      "Athena",
+      "Demeter",
+      "Eros",
+      "Little John"
+    ]
+  },
+  {
+    "test": "does not exist operator",
+    "hrq": "friends does not exist",
+    "mongoq": {
+      "friends": {
+        "$exists": false
+      }
+    },
+    "result": [
+      "BB King",
+      "Hera",
+      "Jesus",
+      "Maria"
+    ]
+  },
+  {
+    "test": "does not exist operator with symbol",
+    "hrq": "friends^",
+    "mongoq": {
+      "friends": {
+        "$exists": false
+      }
+    },
+    "result": [
+      "BB King",
+      "Hera",
+      "Jesus",
+      "Maria"
+    ]
+  },
+  {
+    "test": "field with dot notation",
+    "hrq": "birth.date is greater than 1990-01-01",
+    "mongoq": {
+      "birth.date": {
+        "$gt": {"$date": "1990-01-01T00:00:00.000Z"}
+      }
+    },
+    "result": [
+      "Aphrodite",
+      "Athena",
+      "BB King",
+      "Demeter",
+      "Hera",
+      "Little John",
+      "Maria"
+    ]
+  },
+  {
+    "test": "true keyword",
+    "hrq": "\"is worth dying for\" is true",
+    "mongoq": {
+      "is worth dying for": true
+    },
+    "result": [
+      "Aphrodite",
+      "Athena",
+      "BB King",
+      "Demeter",
+      "Little John"
+    ]
+  },
+  {
+    "test": "false keyword",
+    "hrq": "\"is worth dying for\" is false",
+    "mongoq": {
+      "is worth dying for": false
+    },
+    "result": [
+      "Artemis",
+      "Eros",
+      "Hera",
+      "Jesus",
+      "Maria"
+    ]
+  },
+  {
+    "test": "of operator",
+    "hrq": "place of birth is \"in the sea\"",
+    "mongoq": {
+      "birth.place": "in the sea"
+    },
+    "result": [
+      "Athena",
+      "Demeter",
+      "Hera",
+      "Little John",
+      "Maria"
+    ]
+  },
+  {
+    "test": "string containing double quotes",
+    "hrq": "place of birth is \"in my \\\"brain\\\"\"",
+    "mongoq": {
+      "birth.place": "in my \"brain\""
+    },
+    "result": [
+      "Jesus"
+    ]
+  },
+  {
+    "test": "integer and float",
+    "hrq": "\"hair length\" ranges from -3.14 to 31",
+    "mongoq": {
+      "hair length": {
+        "$gte": -3.14,
+        "$lte": 31
+      }
+    },
+    "result": [
+      "Eros",
+      "Hera",
+      "Little John"
+    ]
+  },
+  {
+    "test": "string containing single quotes",
+    "hrq": "place of birth is \"in McDonald's\"",
+    "mongoq": {
+      "birth.place": "in McDonald's"
+    },
+    "result": [
+      "Artemis",
+      "BB King"
+    ]
+  },
+  {
+    "test": "simple date",
+    "hrq": "date of birth is 2009-04-05",
+    "mongoq": {
+      "birth.date": {"$date": "2009-04-05T00:00:00.000Z"}
+    },
+    "result": []
+  },
+  {
+    "test": "greater than date",
+    "hrq": "date of birth is greater than 1990-01-01",
+    "mongoq": {
+      "birth.date": {
+        "$gt": {"$date": "1990-01-01T00:00:00.000Z"}
+      }
+    },
+    "result": [
+      "Aphrodite",
+      "Athena",
+      "BB King",
+      "Demeter",
+      "Hera",
+      "Little John",
+      "Maria"
+    ]
+  },
+  {
+    "test": "date with hours and minutes",
+    "hrq": "date of birth is 2009-04-05 22:00",
+    "mongoq": {
+      "birth.date": {"$date": "2009-04-05T20:00:00.000Z"}
+    },
+    "result": []
+  },
+  {
+    "test": "date with hours and minutes and seconds",
+    "hrq": "date of birth is 2009-04-05 22:00:14",
+    "mongoq": {
+      "birth.date": {"$date": "2009-04-05T20:00:14.000Z"}
+    },
+    "result": []
   }
 ]

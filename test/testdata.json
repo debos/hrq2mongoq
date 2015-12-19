@@ -34,7 +34,7 @@
       "date": {
         "$date": "1988-05-21T22:00:00.000Z"
       },
-      "place": "at home"
+      "place": "in McDonald's"
     },
     "is worth dying for": false,
     "hair length": 94.15762331243604,
@@ -99,7 +99,7 @@
       "date": {
         "$date": "1988-12-21T23:00:00.000Z"
       },
-      "place": "in my brain"
+      "place": "in my \"brain\""
     },
     "is worth dying for": false,
     "hair length": 72.96312306262553
@@ -124,7 +124,7 @@
       "date": {
         "$date": "1990-11-27T23:00:00.000Z"
       },
-      "place": "at home"
+      "place": "in McDonald's"
     },
     "is worth dying for": true,
     "hair length": 76.5002778924536

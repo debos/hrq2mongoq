@@ -1,6 +1,6 @@
 {
   "name": "hrq2mongoq",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "lib/index",
   "keywords": ["mongo", "query", "parser"],
   "author": {
