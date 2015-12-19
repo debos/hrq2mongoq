@@ -41,8 +41,8 @@ Human Readable Query Syntax and Semantics
 Selects the documents for which the `field` satisfies the single value expression `vexpr`.
 
 **Examples**
-* name is "Athena"
-* "hair length" is 40
+  * name is "Athena"
+  * "hair length" is 40
 
 #### Multiple value expressions
 
@@ -55,8 +55,8 @@ on the two following operators.
 `expression` <- `field` `:` `vexpr` `&` ... `&` `vexpr` `&` `vexpr`
 
 **Examples**
-* name both starts with "A", contains "then" and ends with "a"
-* name:$start="A"&$contains="then"&$end="a"
+  * name both starts with "A", contains "then" and ends with "a"
+  * name:$start="A"&$contains="then"&$end="a"
 
 Selects the documents for which the `field` satisfies all the listed value 
 expressions.
@@ -70,8 +70,8 @@ Selects the documents for which the `field` satisfies at least one of the
 listed value expressions.
 
 **Examples**
-* friends either is "Demeter" or does not exist
-* friends:="Demeter"|^
+  * friends either is "Demeter" or does not exist
+  * friends:="Demeter"|^
 
 #### Combining expressions with logical operators
 
@@ -83,8 +83,8 @@ listed value expressions.
 Selects the documents for which both expressions are satisfied.
 
 **Examples**
-* friends is "Demeter" and "hair length" is less than 50
-* friends="Demeter"&"hair length"<50
+  * friends is "Demeter" and "hair length" is less than 50
+  * friends="Demeter"&"hair length"<50
 
 The keyword `and` must be surrounded by whitespace, where as the `&` symbol can be used without surrounding spaces.
 
@@ -96,8 +96,8 @@ The keyword `and` must be surrounded by whitespace, where as the `&` symbol can 
 Selects the documents for which on of the two expressions is satisfied.
 
 **Examples**
-* friends is "Demeter" or "hair length" is less than 50
-* friends="Demeter"|"hair length"<50
+  * friends is "Demeter" or "hair length" is less than 50
+  * friends="Demeter"|"hair length"<50
 
 The keyword `or` must be surrounded by whitespace, where as the `|` symbol can be used without surrounding spaces.
 
@@ -109,7 +109,7 @@ Selects the documents for which none of the two expressions are satisfied.
 The keyword `nor` must be surrounded by whitespace and it doesn't have a corresponding symbol.
 
 **Examples**
-* friends is "Demeter" nor "hair length" is less than 50
+  * friends is "Demeter" nor "hair length" is less than 50
 
 ##### Associativity and precedence
 Currently the logical operators all have the same precedence and are right associative. So
@@ -120,8 +120,8 @@ This might be counter intuitive, so it is advised to always use parentheses `(` 
 One could write for example: `(` `a` `and` `b` `)` `or` `(` `c` `and` `d` `)`.
 
 **Examples**
-* (name is "Hera" and friends does not exist) or "hair length" > 90
-* name is "Hera" and (friends does not exist or "hair length" > 90)
+  * (name is "Hera" and friends does not exist) or "hair length" > 90
+  * name is "Hera" and (friends does not exist or "hair length" > 90)
 
 #### Value expressions
 A value expression `vexpr` defines a constraint on a field.
@@ -163,8 +163,8 @@ As with the logical operators, the 'natural language' keywords must be surrounde
 The range operator constraints the value to be within the specified range (inclusive).
 
 **Examples**
-* "hair length" ranges from 70 to 90
-* "hair length"{}=70-90
+  * "hair length" ranges from 70 to 90
+  * "hair length"{}=70-90
 
 ##### String matching
 `vexpr` <- `starts with` `string`
@@ -188,10 +188,10 @@ All string matching is currently case sensitive.
 The `matches` and `regex=` operators constraint the value to match the specified regular expression (Perl compatible).
 
 **Examples**
-* name both starts with "A", contains "then" and ends with "a"
-* name:$start="A"&$contains="then"&$end="a"
-* name matches "h.*a"
-* name$regex="h.*a"
+  * name both starts with "A", contains "then" and ends with "a"
+  * name:$start="A"&$contains="then"&$end="a"
+  * name matches "h.*a"
+  * name$regex="h.*a"
 
 ##### Exist
 `vexpr` <- `exists`
@@ -201,8 +201,8 @@ The `matches` and `regex=` operators constraint the value to match the specified
 States that the field should exist.
 
 **Examples**
-* friends exist
-* friends*
+  * friends exist
+  * friends*
 
 ##### Does not exist
 `vexpr` <- `does not exist`
@@ -212,8 +212,8 @@ States that the field should exist.
 States that the field should not exist.
 
 **Examples**
-* friends does not exist
-* friends^
+  * friends does not exist
+  * friends^
 
 ### Fields
 `field` <- `fieldname`
@@ -235,9 +235,9 @@ Please note there is a subtle semantical difference between the dot notation and
 `field` `.` `subfield` means the subfield of the field in human language, whereas `subfield` `of` `field` means field.subfield in mongo language. Hoping you still understand my language.
 
 **Examples**
-* birth.date is greater than 1990-01-01
-* date of birth is greater than 1990-01-01
-* "is worth dying for" is true
+  * birth.date is greater than 1990-01-01
+  * date of birth is greater than 1990-01-01
+  * "is worth dying for" is true
 
 ### Values
 A `value` can be one of the following four datatypes:
@@ -260,15 +260,15 @@ Quotes within the string should be escaped.
 `string` <- `"`a string containing \\"quotes\\"`"`
 
 **Examples**
-* place of birth is "in the sea"
-* place of birth is "in my \"brain\""
+  * place of birth is "in the sea"
+  * place of birth is "in my \"brain\""
 
 #### Numbers
 
 A `number` can be a signed integers or a float, for example `-4567` or `42.314`.
 
 **Examples**
-* "hair length" ranges from -3.14 to 31
+  * "hair length" ranges from -3.14 to 31
 
 #### Date and time
 `datetime` <- `yyyy` `-` `MM` `-` `dd`
@@ -281,16 +281,16 @@ Note that all three formats will internally be converted to a JavaScript Date
 object, which is the number of milliseconds from 1 January 1970 00:00:00 UTC.
 
 **Examples**
-* date of birth is 2009-04-05
-* date of birth is 2009-04-05 22:00
-* date of birth is 2009-04-05 22:00:14
+  * date of birth is 2009-04-05
+  * date of birth is 2009-04-05 22:00
+  * date of birth is 2009-04-05 22:00:14
 
 #### Booleans
 A `boolean` can be represented by the keywords `true` and `false`.
 
 **Examples**
-* "is worth dying for" is true
-* "is worth dying for" is false
+  * "is worth dying for" is true
+  * "is worth dying for" is false
 
 Development
 -----------
