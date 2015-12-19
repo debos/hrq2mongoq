@@ -41,6 +41,7 @@ Human Readable Query Syntax and Semantics
 Selects the documents for which the `field` satisfies the single value expression `vexpr`.
 
 **Examples**
+
   * name is "Athena"
   * "hair length" is 40
 
@@ -55,6 +56,7 @@ on the two following operators.
 `expression` <- `field` `:` `vexpr` `&` ... `&` `vexpr` `&` `vexpr`
 
 **Examples**
+
   * name both starts with "A", contains "then" and ends with "a"
   * name:$start="A"&$contains="then"&$end="a"
 
@@ -70,6 +72,7 @@ Selects the documents for which the `field` satisfies at least one of the
 listed value expressions.
 
 **Examples**
+
   * friends either is "Demeter" or does not exist
   * friends:="Demeter"|^
 
@@ -83,6 +86,7 @@ listed value expressions.
 Selects the documents for which both expressions are satisfied.
 
 **Examples**
+
   * friends is "Demeter" and "hair length" is less than 50
   * friends="Demeter"&"hair length"<50
 
@@ -96,6 +100,7 @@ The keyword `and` must be surrounded by whitespace, where as the `&` symbol can 
 Selects the documents for which on of the two expressions is satisfied.
 
 **Examples**
+
   * friends is "Demeter" or "hair length" is less than 50
   * friends="Demeter"|"hair length"<50
 
@@ -109,6 +114,7 @@ Selects the documents for which none of the two expressions are satisfied.
 The keyword `nor` must be surrounded by whitespace and it doesn't have a corresponding symbol.
 
 **Examples**
+
   * friends is "Demeter" nor "hair length" is less than 50
 
 ##### Associativity and precedence
@@ -120,6 +126,7 @@ This might be counter intuitive, so it is advised to always use parentheses `(` 
 One could write for example: `(` `a` `and` `b` `)` `or` `(` `c` `and` `d` `)`.
 
 **Examples**
+
   * (name is "Hera" and friends does not exist) or "hair length" > 90
   * name is "Hera" and (friends does not exist or "hair length" > 90)
 
@@ -163,6 +170,7 @@ As with the logical operators, the 'natural language' keywords must be surrounde
 The range operator constraints the value to be within the specified range (inclusive).
 
 **Examples**
+
   * "hair length" ranges from 70 to 90
   * "hair length"{}=70-90
 
@@ -188,6 +196,7 @@ All string matching is currently case sensitive.
 The `matches` and `regex=` operators constraint the value to match the specified regular expression (Perl compatible).
 
 **Examples**
+
   * name both starts with "A", contains "then" and ends with "a"
   * name:$start="A"&$contains="then"&$end="a"
   * name matches "h.*a"
@@ -201,6 +210,7 @@ The `matches` and `regex=` operators constraint the value to match the specified
 States that the field should exist.
 
 **Examples**
+
   * friends exist
   * friends*
 
@@ -212,6 +222,7 @@ States that the field should exist.
 States that the field should not exist.
 
 **Examples**
+
   * friends does not exist
   * friends^
 
@@ -235,6 +246,7 @@ Please note there is a subtle semantical difference between the dot notation and
 `field` `.` `subfield` means the subfield of the field in human language, whereas `subfield` `of` `field` means field.subfield in mongo language. Hoping you still understand my language.
 
 **Examples**
+
   * birth.date is greater than 1990-01-01
   * date of birth is greater than 1990-01-01
   * "is worth dying for" is true
@@ -260,6 +272,7 @@ Quotes within the string should be escaped.
 `string` <- `"`a string containing \\"quotes\\"`"`
 
 **Examples**
+
   * place of birth is "in the sea"
   * place of birth is "in my \"brain\""
 
@@ -281,6 +294,7 @@ Note that all three formats will internally be converted to a JavaScript Date
 object, which is the number of milliseconds from 1 January 1970 00:00:00 UTC.
 
 **Examples**
+
   * date of birth is 2009-04-05
   * date of birth is 2009-04-05 22:00
   * date of birth is 2009-04-05 22:00:14
@@ -289,6 +303,7 @@ object, which is the number of milliseconds from 1 January 1970 00:00:00 UTC.
 A `boolean` can be represented by the keywords `true` and `false`.
 
 **Examples**
+
   * "is worth dying for" is true
   * "is worth dying for" is false
 
