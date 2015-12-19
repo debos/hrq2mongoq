@@ -33,9 +33,9 @@ As easy as npm can be:
 Human Readable Query Syntax and Semantics
 -----------------------------------------
 
-### Expressions
+## Expressions
 
-#### Basic expression
+### Basic expression
 `expression` <- `field` `vexpr`
 
 Selects the documents for which the `field` satisfies the single value expression `vexpr`.
@@ -45,25 +45,29 @@ Selects the documents for which the `field` satisfies the single value expressio
   * name is "Athena"
   * "hair length" is 40
 
-#### Multiple value expressions
+***
+
+### Multiple value expressions
 
 Instead of providing one value expression, one can provide multiple one with 
 on the two following operators. 
 
-##### `both...and` operator
+#### `both...and` operator
 `expression` <- `field` `both` `vexpr` `,` ... `,` `vexpr` `and` `vexpr`
 
 `expression` <- `field` `:` `vexpr` `&` ... `&` `vexpr` `&` `vexpr`
+
+Selects the documents for which the `field` satisfies all the listed value 
+expressions.
 
 **Examples**
 
   * name both starts with "A", contains "then" and ends with "a"
   * name:$start="A"&$contains="then"&$end="a"
 
-Selects the documents for which the `field` satisfies all the listed value 
-expressions.
+***
 
-##### `either...or` operator
+#### `either...or` operator
 `expression` <- `field` `either` `vexpr` `,` ... `,` `vexpr` `or` `vexpr`
 
 `expression` <- `field` `:` `vexpr` `|` ... `|` `vexpr` `|` `vexpr`
@@ -76,9 +80,11 @@ listed value expressions.
   * friends either is "Demeter" or does not exist
   * friends:="Demeter"|^
 
-#### Combining expressions with logical operators
+***
 
-##### `and` operator
+### Combining expressions with logical operators
+
+#### `and` operator
 `expression` <- `expression` `and` `expression`
 
 `expression` <- `expression` `&` `expression`
@@ -92,7 +98,9 @@ Selects the documents for which both expressions are satisfied.
 
 The keyword `and` must be surrounded by whitespace, where as the `&` symbol can be used without surrounding spaces.
 
-##### `or` operator
+***
+
+#### `or` operator
 `expression` <- `expression`  ` or` `expression`
 
 `expression` <- `expression` `|` `expression`
@@ -106,7 +114,9 @@ Selects the documents for which on of the two expressions is satisfied.
 
 The keyword `or` must be surrounded by whitespace, where as the `|` symbol can be used without surrounding spaces.
 
-##### `nor` operator
+***
+
+#### `nor` operator
 `expression` ->`expression` `nor` `expression`
 
 Selects the documents for which none of the two expressions are satisfied.
@@ -116,8 +126,10 @@ The keyword `nor` must be surrounded by whitespace and it doesn't have a corresp
 **Examples**
 
   * friends is "Demeter" nor "hair length" is less than 50
+  
+***
 
-##### Associativity and precedence
+#### Associativity and precedence
 Currently the logical operators all have the same precedence and are right associative. So
 
 `a` `and` `b` `or` `c` `and` `d` is interpreted as `a` `and` (`b` `or` (`c` `and` `d`))
@@ -130,10 +142,12 @@ One could write for example: `(` `a` `and` `b` `)` `or` `(` `c` `and` `d` `)`.
   * (name is "Hera" and friends does not exist) or "hair length" > 90
   * name is "Hera" and (friends does not exist or "hair length" > 90)
 
-#### Value expressions
+***
+
+### Value expressions
 A value expression `vexpr` defines a constraint on a field.
 
-##### Equality and inequality operators
+#### Equality and inequality operators
 The following operators can be used:
 
 `vexpr` <- `is` `value`
@@ -162,7 +176,9 @@ The following operators can be used:
 
 As with the logical operators, the 'natural language' keywords must be surrounded by whitespace, where the symbols can be used without surrounding spaces. If it is needed to explain the semantics of these operators any further, you can contact the author to make a personal appointment in Switzerland. During a hike in the Alps he will most happily explain all the ins and outs about them.
 
-##### Range operator
+***
+
+#### Range operator
 `vexpr` <- `ranges from` `value` `to` `value`
 
 `vexpr` <- `{}=` `value` `-` `value`
@@ -174,7 +190,9 @@ The range operator constraints the value to be within the specified range (inclu
   * "hair length" ranges from 70 to 90
   * "hair length"{}=70-90
 
-##### String matching
+***
+
+#### String matching
 `vexpr` <- `starts with` `string`
 
 `vexpr` <- `ends with` `string`
@@ -202,7 +220,9 @@ The `matches` and `regex=` operators constraint the value to match the specified
   * name matches "h.*a"
   * name$regex="h.*a"
 
-##### Exist
+***
+
+#### Exist
 `vexpr` <- `exists`
 
 `vexpr` <- `*`
@@ -214,7 +234,9 @@ States that the field should exist.
   * friends exist
   * friends*
 
-##### Does not exist
+***
+
+#### Does not exist
 `vexpr` <- `does not exist`
 
 `vexpr` <- `^`
@@ -226,7 +248,9 @@ States that the field should not exist.
   * friends does not exist
   * friends^
 
-### Fields
+***
+
+## Fields
 `field` <- `fieldname`
 
 `field` <- `fieldname` `.` `fieldname` `.` ... `.` `fieldname`
@@ -251,7 +275,9 @@ Please note there is a subtle semantical difference between the dot notation and
   * date of birth is greater than 1990-01-01
   * "is worth dying for" is true
 
-### Values
+***
+
+## Values
 A `value` can be one of the following four datatypes:
 
 `value` <- `string`
@@ -262,7 +288,7 @@ A `value` can be one of the following four datatypes:
 
 `value` <- `boolean`
 
-#### Strings
+### Strings
 
 A string is a sequence of characters surrounded by double quotes.
 Quotes within the string should be escaped.
@@ -276,14 +302,18 @@ Quotes within the string should be escaped.
   * place of birth is "in the sea"
   * place of birth is "in my \"brain\""
 
-#### Numbers
+***
+
+### Numbers
 
 A `number` can be a signed integers or a float, for example `-4567` or `42.314`.
 
 **Examples**
   * "hair length" ranges from -3.14 to 31
 
-#### Date and time
+***
+
+### Date and time
 `datetime` <- `yyyy` `-` `MM` `-` `dd`
 
 `datetime` <- `yyyy` `-` `MM` `-` `dd` `hh` `:` `mm`
@@ -299,13 +329,17 @@ object, which is the number of milliseconds from 1 January 1970 00:00:00 UTC.
   * date of birth is 2009-04-05 22:00
   * date of birth is 2009-04-05 22:00:14
 
-#### Booleans
+***
+
+### Booleans
 A `boolean` can be represented by the keywords `true` and `false`.
 
 **Examples**
 
   * "is worth dying for" is true
   * "is worth dying for" is false
+
+***
 
 Development
 -----------
