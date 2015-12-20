@@ -18,6 +18,27 @@
     "result": []
   },
   {
+    "test": "is not operator",
+    "hrq": "\"hair length\" is not 40",
+    "mongoq": {
+      "hair length": {
+        "$ne": 40
+      }
+    },
+    "result": [
+      "Aphrodite",
+      "Artemis",
+      "Athena",
+      "BB King",
+      "Demeter",
+      "Eros",
+      "Hera",
+      "Jesus",
+      "Little John",
+      "Maria"
+    ]
+  },
+  {
     "test": "both operator",
     "hrq": "name both starts with \"A\", contains \"then\" and ends with \"a\"",
     "mongoq": {

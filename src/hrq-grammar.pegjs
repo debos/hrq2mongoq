@@ -1,49 +1,6 @@
 /**
  This is the PEG.js grammar file used for generating a parser to transform a HumanReadablyQuery (HRQ) into a
   MongoQuery (MongoQ) string
-
-WishList
-- strings without quotes
-- refactor grammar to make more efficient
-- refactor grammar to make more beautiful
-
-Tests
-- strings including quotes
-
-  Examples:
-
- Example1 - Equivalence
-     HRQ:     girl is "super"
-     MongoQ: {"girl": "super"}
-
- Example2 - Or operator for two conditions
-     HRQ:    girl is super or girl is not 'crying'
-     MongoQ: {"$or": [{"girl": "super"}, {"girl": {"$not": 'crying'}}]}
-
- Example3 - Either operator for one field and two options
-      HRQ:    girl either is "super" or is not "crying"
-      MongoQ: {"$or": [{"girl": "super"}, {"girl": {"$not": "crying"}}]}
-
- Example4 - Either operator for one field and multiple options
-      HRQ:    girl either is "super", is "sexy" or is "smart"
-      MongoQ: {"$or": [{"girl": "super"}, {"girl": "sexy"}, {"girl": "smart"}]}
-
- Example5 - Dot notation
-      HRQ:    girl of song either is "super", is "sexy" or is "smart" or rhythm of song is "irresistible"
-      MongoQ: {"$or": [{"$or": [{"song.girl": "super"}, {"song.girl": "sexy"}, {"song.girl": "smart"}]}, {"song.rhythm": "irresistible"}]}
-
- Example6 - Less than
-      HRQ:    song.girl.age<20
-      MongoQ: {"song.girl.age": {"$lt": 20}}
-
- Example7 - Greater than
-      HRQ:    song.girl.age is greater than 20.4
-      MongoQ: {"song.girl.age": {"$gt": 20.4}}
-
- Example7 - Range
-      HRQ:    age ranges from 20 to 23
-      MongoQ: {"age": {"$gte": 20, "$lte": 23}}
-
  **/
 
 result = _ expr:expression _ {return expr;}
@@ -67,8 +24,8 @@ condition
 / left:fieldid right:valueexpr {return '{' + left + ': ' + right + '}';}
 
 valueexpr
-= is value:value {return value;}
-/ not value:value {return '{"$not": ' + value + '}';}
+= not value:value {return '{"$ne": ' + value + '}';}
+/ is value:value {return value;}
 / lt value:value {return '{"$lt": ' + value + '}';}
 / gt value:value {return '{"$gt": ' + value + '}';}
 / lte value:value {return '{"$lte": ' + value + '}';}
