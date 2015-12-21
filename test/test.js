@@ -5,7 +5,7 @@ var happyflowtests = require("./happyflow");
 var runTest = function (test, useDB) {
     it(test.test, function (done) {
         var mongoq = hrq2mongoq.parse(test.hrq);
-        expect(mongoq).to.eql(JSON.parse(JSON.stringify(test.mongoq), hrq2mongoq.dateReviver));
+        expect(mongoq).to.eql(JSON.parse(JSON.stringify(test.mongoq), hrq2mongoq.bsonReviver));
 
         if (useDB) {
             var MongoClient = require('mongodb').MongoClient;

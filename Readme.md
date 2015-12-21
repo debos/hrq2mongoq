@@ -18,7 +18,7 @@ Features
   * Comparison operators: `=`, `>`, `<`, `=>`, `=<`, `either...or`, `both...and` and `ranges`
   * String matching and regexes
   * Dot notation and `$exists`
-  * Four datatypes: `strings`, `numbers`, `date and time` and `booleans`
+  * Five datatypes: `strings`, `numbers`, `date and time`, `booleans` and `objectIDs`
 
 
 Installation
@@ -42,7 +42,7 @@ Selects the documents for which the `field` satisfies the single value expressio
 
 **Examples**
 
-  * name is "Athena"
+  * name is Athena
   * "hair length" is 40
 
 ---
@@ -64,8 +64,8 @@ expressions.
 
 **Examples**
 
-  * name both starts with "A", contains "then" and ends with "a"
-  * name:$start="A"&$contains="then"&$end="a"
+  * name both starts with A, contains then and ends with a
+  * name:$start=A&$contains=then&$end=a
 
 ---
 
@@ -79,8 +79,8 @@ listed value expressions.
 
 **Examples**
 
-  * friends either is "Demeter" or does not exist
-  * friends:="Demeter"|^
+  * friends either is Demeter or does not exist
+  * friends:=Demeter|^
 
 ---
 
@@ -97,8 +97,8 @@ Selects the documents for which both expressions are satisfied.
 
 **Examples**
 
-  * friends is "Demeter" and "hair length" is less than 50
-  * friends="Demeter"&"hair length"<50
+  * friends is Demeter and "hair length" is less than 50
+  * friends=Demeter&"hair length"<50
 
 The keyword `and` must be surrounded by whitespace, where as the `&` symbol can be used without surrounding spaces.
 
@@ -113,8 +113,8 @@ Selects the documents for which on of the two expressions is satisfied.
 
 **Examples**
 
-  * friends is "Demeter" or "hair length" is less than 50
-  * friends="Demeter"|"hair length"<50
+  * friends is Demeter or "hair length" is less than 50
+  * friends=Demeter|"hair length"<50
 
 The keyword `or` must be surrounded by whitespace, where as the `|` symbol can be used without surrounding spaces.
 
@@ -129,7 +129,7 @@ The keyword `nor` must be surrounded by whitespace and it doesn't have a corresp
 
 **Examples**
 
-  * friends is "Demeter" nor "hair length" is less than 50
+  * friends is Demeter nor "hair length" is less than 50
   
 ---
 
@@ -143,8 +143,8 @@ One could write for example: `(` `a` `and` `b` `)` `or` `(` `c` `and` `d` `)`.
 
 **Examples**
 
-  * (name is "Hera" and friends does not exist) or "hair length" > 90
-  * name is "Hera" and (friends does not exist or "hair length" > 90)
+  * (name is Hera and friends does not exist) or "hair length" > 90
+  * name is Hera and (friends does not exist or "hair length" > 90)
 
 ---
 
@@ -221,8 +221,8 @@ The `matches` and `regex=` operators constraint the value to match the specified
 
 **Examples**
 
-  * name both starts with "A", contains "then" and ends with "a"
-  * name:$start="A"&$contains="then"&$end="a"
+  * name both starts with A, contains then and ends with a
+  * name:$start=A&$contains=then&$end=a
   * name matches "h.*a"
   * name$regex="h.*a"
 
@@ -257,19 +257,15 @@ States that the field should not exist.
 ---
 
 ## Fields
-`field` <- `fieldname`
+`field` <- `word`
 
-`field` <- `fieldname` `.` `fieldname` `.` ... `.` `fieldname`
+`field` <- `word` `.` `word` `.` ... `.` `word`
 
-`field` <- `fieldname` `of` `fieldname` `of` ... `of` `fieldname`
+`field` <- `word` `of` `word` `of` ... `of` `word`
 
-`field` <- `string`
+`field` <- `quoted string`
 
-`fieldname` may not contain any of the following special characters: :`$` `{` `}` `"` `'` `=` `<` `>` `&` `!` `*` `^` `.` `,`
-
-If any of the fieldnames does contain such a special character or a space, the field can only be expressed as a `string` (which is always surrounded by quotes, see below).
-
-Fields of embedded documents can be specified by using dot notation `.` or the keyword `of`. If the field is given as a `string` only the dot notation can be used.
+Fields of embedded documents can be specified by using dot notation `.` or the keyword `of`. If the field is given as a `quoted_string` only the dot notation can be used.
 
 Please note there is a subtle semantical difference between the dot notation and the `of` keyword:
 
@@ -284,9 +280,11 @@ Please note there is a subtle semantical difference between the dot notation and
 ---
 
 ## Values
-A `value` can be one of the following four datatypes:
+A `value` can be one of the following datatypes:
 
-`value` <- `string`
+`value` <- `word`
+
+`value` <- `quoted string`
 
 `value` <- `number`
 
@@ -294,11 +292,29 @@ A `value` can be one of the following four datatypes:
 
 `value` <- `boolean`
 
+`value` <- `objectID`
+
 ---
 
-### Strings
+### Words
 
-A string is a sequence of characters surrounded by double quotes.
+A `word` 
+
+  * is a sequence of characters without whitespaces
+  * may not contain any of the following special characters: `$` `:` `{` `}` `-` `+` `"` `'` `=` `<` `>` `&` `|` `!` `*` `^` `.` `,`
+  * may not start with a digit (0-9)
+
+
+Examples
+
+  * name is whatever
+  * name is word_with_underscore
+
+---
+
+### Quoted strings
+
+A `quoted string is a sequence of characters surrounded by double quotes.
 Quotes within the string should be escaped.
 
 `string` <- `"`a string with double quotes`"`
@@ -346,6 +362,15 @@ A `boolean` can be represented by the keywords `true` and `false`.
 
   * "is worth dying for" is true
   * "is worth dying for" is false
+  
+---
+
+### ObjectIDs
+An `objectID` is represented as `0x` followed by 24 hexadecimal characters.
+
+**Examples**
+
+  * \_id is 0x507f1f77bcf86cd799439011  
 
 ---
 

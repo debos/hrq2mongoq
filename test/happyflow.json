@@ -1,7 +1,7 @@
 [
   {
     "test": "basic equality",
-    "hrq": "name is \"Athena\"",
+    "hrq": "name is Athena",
     "mongoq": {
       "name": "Athena"
     },
@@ -40,7 +40,7 @@
   },
   {
     "test": "both operator",
-    "hrq": "name both starts with \"A\", contains \"then\" and ends with \"a\"",
+    "hrq": "name both starts with A, contains then and ends with a",
     "mongoq": {
       "$and": [
         {
@@ -66,7 +66,7 @@
   },
   {
     "test": "both operator with symbols",
-    "hrq": "name:$start=\"A\"&$contains=\"then\"&$end=\"a\"",
+    "hrq": "name:$start=A&$contains=then&$end=a",
     "mongoq": {
       "$and": [
         {
@@ -92,7 +92,7 @@
   },
   {
     "test": "either operator",
-    "hrq": "friends either is \"Demeter\" or does not exist",
+    "hrq": "friends either is Demeter or does not exist",
     "mongoq": {
       "$or": [
         {
@@ -115,7 +115,7 @@
   },
   {
     "test": "either operator with symbols",
-    "hrq": "friends:=\"Demeter\"|^",
+    "hrq": "friends:=Demeter|^",
     "mongoq": {
       "$or": [
         {
@@ -138,7 +138,7 @@
   },
   {
     "test": "and operator with symbols",
-    "hrq": "friends=\"Demeter\"&\"hair length\"<50",
+    "hrq": "friends=Demeter&\"hair length\"<50",
     "mongoq": {
       "$and": [
         {
@@ -157,7 +157,7 @@
   },
   {
     "test": "and operator",
-    "hrq": "friends is \"Demeter\" and \"hair length\" is less than 50",
+    "hrq": "friends is Demeter and \"hair length\" is less than 50",
     "mongoq": {
       "$and": [
         {
@@ -176,7 +176,7 @@
   },
   {
     "test": "or operator",
-    "hrq": "friends is \"Demeter\" or \"hair length\" is less than 50",
+    "hrq": "friends is Demeter or \"hair length\" is less than 50",
     "mongoq": {
       "$or": [
         {
@@ -201,7 +201,7 @@
   },
   {
     "test": "or operator with symbols",
-    "hrq": "friends=\"Demeter\"|\"hair length\"<50",
+    "hrq": "friends=Demeter|\"hair length\"<50",
     "mongoq": {
       "$or": [
         {
@@ -226,7 +226,7 @@
   },
   {
     "test": "nor operator",
-    "hrq": "friends is \"Demeter\" nor \"hair length\" is less than 50",
+    "hrq": "friends is Demeter nor \"hair length\" is less than 50",
     "mongoq": {
       "$nor": [
         {
@@ -247,7 +247,7 @@
   },
   {
     "test": "parentheses1",
-    "hrq": "(name is \"Hera\" and friends does not exist) or \"hair length\" > 90",
+    "hrq": "(name is Hera and friends does not exist) or \"hair length\" > 90",
     "mongoq": {
       "$or": [
         {
@@ -276,7 +276,7 @@
   },
   {
     "test": "parentheses2",
-    "hrq": "name is \"Hera\" and (friends does not exist or \"hair length\" > 90)",
+    "hrq": "name is Hera and (friends does not exist or \"hair length\" > 90)",
     "mongoq": {
       "$and": [
         {
@@ -427,7 +427,9 @@
     "hrq": "birth.date is greater than 1990-01-01",
     "mongoq": {
       "birth.date": {
-        "$gt": {"$date": "1990-01-01T00:00:00.000Z"}
+        "$gt": {
+          "$date": "1990-01-01T00:00:00.000Z"
+        }
       }
     },
     "result": [
@@ -494,10 +496,10 @@
   },
   {
     "test": "integer and float",
-    "hrq": "\"hair length\" ranges from -3.14 to 31",
+    "hrq": "\"hair length\" ranges from -0.14 to 31",
     "mongoq": {
       "hair length": {
-        "$gte": -3.14,
+        "$gte": -0.14,
         "$lte": 31
       }
     },
@@ -522,7 +524,9 @@
     "test": "simple date",
     "hrq": "date of birth is 2009-04-05",
     "mongoq": {
-      "birth.date": {"$date": "2009-04-05T00:00:00.000Z"}
+      "birth.date": {
+        "$date": "2009-04-05T00:00:00.000Z"
+      }
     },
     "result": []
   },
@@ -531,7 +535,9 @@
     "hrq": "date of birth is greater than 1990-01-01",
     "mongoq": {
       "birth.date": {
-        "$gt": {"$date": "1990-01-01T00:00:00.000Z"}
+        "$gt": {
+          "$date": "1990-01-01T00:00:00.000Z"
+        }
       }
     },
     "result": [
@@ -548,7 +554,9 @@
     "test": "date with hours and minutes",
     "hrq": "date of birth is 2009-04-05 22:00",
     "mongoq": {
-      "birth.date": {"$date": "2009-04-05T20:00:00.000Z"}
+      "birth.date": {
+        "$date": "2009-04-05T20:00:00.000Z"
+      }
     },
     "result": []
   },
@@ -556,8 +564,65 @@
     "test": "date with hours and minutes and seconds",
     "hrq": "date of birth is 2009-04-05 22:00:14",
     "mongoq": {
-      "birth.date": {"$date": "2009-04-05T20:00:14.000Z"}
+      "birth.date": {
+        "$date": "2009-04-05T20:00:14.000Z"
+      }
     },
     "result": []
+  },
+  {
+    "test": "string and field name with and and and operator",
+    "hrq": "name is and and and is or",
+    "mongoq": {
+      "$and": [
+        {
+          "name": "and"
+        },
+        {
+          "and": "or"
+        }
+      ]
+    },
+    "result": []
+  },
+  {
+    "test": "or what?",
+    "hrq": "  or is or or or is  and ",
+    "mongoq": {
+      "$or": [
+        {
+          "or": "or"
+        },
+        {
+          "or": "and"
+        }
+      ]
+    },
+    "result": []
+  },
+  {
+    "test": "orandum",
+    "hrq": "  or   is and    and    or =  or ",
+    "mongoq": {
+      "$and": [
+        {
+          "or": "and"
+        },
+        {
+          "or": "or"
+        }
+      ]
+    },
+    "result": []
+  },
+  {
+    "test": "objectid",
+    "hrq": "_id is 0x507f1f77bcf86cd799439011",
+    "mongoq": {
+      "_id": {"$oid": "507f1f77bcf86cd799439011"}
+    },
+    "result": [
+      "Aphrodite"
+    ]
   }
 ]

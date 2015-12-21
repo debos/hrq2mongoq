@@ -25,11 +25,11 @@ condition
 
 valueexpr
 = not value:value {return '{"$ne": ' + value + '}';}
-/ is value:value {return value;}
 / lt value:value {return '{"$lt": ' + value + '}';}
 / gt value:value {return '{"$gt": ' + value + '}';}
 / lte value:value {return '{"$lte": ' + value + '}';}
 / gte value:value {return '{"$gte": ' + value + '}';}
+/ is value:value {return value;}
 / from from:value to to:value {return '{"$gte": ' + from + ', "$lte": ' + to + '}';}
 / exists {return '{"$exists": true}';}
 / notexists {return '{"$exists": false}';}
@@ -56,33 +56,37 @@ matches  = __ 'matches' __ / _ '$regex=' _
 _ 'whitespace'  = [ \n\t\r]*
 __ 'whitespace' = [ \n\t\r]+
 
-fieldid = string / field:fieldexpr {return '"' + field + '"';}
+fieldid = dqstring / field:fieldexpr {return '"' + field + '"';}
 
 fieldexpr
-= left:field of right:fieldexpr {return right + '.' + left;}
-/ left:field dot right:fieldexpr {return left + '.' + right;}
-/ field
+= left:simplestring of right:fieldexpr {return right + '.' + left;}
+/ left:simplestring dot right:fieldexpr {return left + '.' + right;}
+/ simplestring
+
 of = __ 'of' __
 dot = '.'
 
-field = nodollar chars:notreserved* {return chars.join('');}
-nodollar = !"$"
-notreserved = [^:${}"'=<>&!*\^., \n\t\r]
+simplestring = !digit chars:notreserved+ {return chars.join('');}
+notreserved = [^:${}\-+"'=<>&|!*\^., \n\t\r]
 
-value 'value'  = datevalue / number / boolean /  string
+value 'value'  = datevalue / id:objectid {id[0] = ''; return '{"$oid": "' + id.join('') + '"}';}/ number / boolean / string
 number  = float / integer
 boolean = "true" / "false"
-string  = dqstring
+string  = dqstring / simplestring:simplestring {return '"' + simplestring + '"';}
 
 float
-= whole:integer '.' partial:digits {
-    return parseFloat(whole + '.' + partial)
+= sign:sign? whole:digits '.' partial:digits {
+    return parseFloat(sign ? sign + whole + '.' + partial : whole + '.' + partial);
   }
 
 integer
 = sign:sign? digits:digits {
     return parseInt(sign ? sign + digits : digits);
   }
+
+objectid
+= "0x" x x x x x x x x x x x x x x x x x x x x x x x x
+x = [0-9A-Fa-f]
 
 digits
 = digits:digit+ {

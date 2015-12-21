@@ -1,6 +1,6 @@
 {
   "name": "hrq2mongoq",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "lib/index",
   "keywords": ["mongo", "query", "parser"],
   "author": {
@@ -24,7 +24,9 @@
     "type": "git",
     "url": "https://bitbucket.org/debos/hrq2mongoq.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bson": "^0.4.20"
+  },
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.3",
