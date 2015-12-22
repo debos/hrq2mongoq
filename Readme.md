@@ -4,6 +4,29 @@ Human Readable Query to Mongo Query (hrq2mongoq)
 hrq2mongoq lets you formulate MongoDB queries in a human readable way by 
 transforming HRQs (human readably queries) into MongoDB queries.
 
+<!-- toc -->
+
+* [Examples of HRQs](#examples-of-hrqs)
+* [Features](#features)
+* [Installation](#installation)
+* [Human Readable Query Syntax and Semantics](#human-readable-query-syntax-and-semantics)
+  * [Expressions](#expressions)
+    * [Basic expression](#basic-expression)
+    * [Multiple value expressions](#multiple-value-expressions)
+    * [Combining expressions with logical operators](#combining-expressions-with-logical-operators)
+    * [Value expressions](#value-expressions)
+  * [Fields](#fields)
+  * [Values](#values)
+    * [Words](#words)
+    * [Quoted strings](#quoted-strings)
+    * [Numbers](#numbers)
+    * [Date and time](#date-and-time)
+    * [Booleans](#booleans)
+    * [ObjectIDs](#objectids)
+* [Development](#development)
+
+<!-- toc stop --> 
+
 Examples of HRQs
 ----------------
   * city of person is "Amsterdam" and occupation of person is "studying"
@@ -31,11 +54,11 @@ As easy as npm can be:
 Human Readable Query Syntax and Semantics
 -----------------------------------------
 
-## Expressions
+### Expressions
 
 ---
 
-### Basic expression
+#### Basic expression
 `expression` <- `field` `vexpr`
 
 Selects the documents for which the `field` satisfies the single value expression `vexpr`.
@@ -47,14 +70,14 @@ Selects the documents for which the `field` satisfies the single value expressio
 
 ---
 
-### Multiple value expressions
+#### Multiple value expressions
 
 Instead of providing one value expression, one can provide multiple one with 
 on the two following operators. 
 
 ---
 
-#### `both...and` operator
+##### `both...and` operator
 `expression` <- `field` `both` `vexpr` `,` ... `,` `vexpr` `and` `vexpr`
 
 `expression` <- `field` `:` `vexpr` `&` ... `&` `vexpr` `&` `vexpr`
@@ -69,7 +92,7 @@ expressions.
 
 ---
 
-#### `either...or` operator
+##### `either...or` operator
 `expression` <- `field` `either` `vexpr` `,` ... `,` `vexpr` `or` `vexpr`
 
 `expression` <- `field` `:` `vexpr` `|` ... `|` `vexpr` `|` `vexpr`
@@ -84,11 +107,11 @@ listed value expressions.
 
 ---
 
-### Combining expressions with logical operators
+#### Combining expressions with logical operators
 
 ---
 
-#### `and` operator
+##### `and` operator
 `expression` <- `expression` `and` `expression`
 
 `expression` <- `expression` `&` `expression`
@@ -104,7 +127,7 @@ The keyword `and` must be surrounded by whitespace, where as the `&` symbol can 
 
 ---
 
-#### `or` operator
+##### `or` operator
 `expression` <- `expression`  ` or` `expression`
 
 `expression` <- `expression` `|` `expression`
@@ -120,7 +143,7 @@ The keyword `or` must be surrounded by whitespace, where as the `|` symbol can b
 
 ---
 
-#### `nor` operator
+##### `nor` operator
 `expression` ->`expression` `nor` `expression`
 
 Selects the documents for which none of the two expressions are satisfied.
@@ -133,7 +156,7 @@ The keyword `nor` must be surrounded by whitespace and it doesn't have a corresp
   
 ---
 
-#### Associativity and precedence
+##### Associativity and precedence
 Currently the logical operators all have the same precedence and are right associative. So
 
 `a` `and` `b` `or` `c` `and` `d` is interpreted as `a` `and` (`b` `or` (`c` `and` `d`))
@@ -148,12 +171,12 @@ One could write for example: `(` `a` `and` `b` `)` `or` `(` `c` `and` `d` `)`.
 
 ---
 
-### Value expressions
+#### Value expressions
 A value expression `vexpr` defines a constraint on a field.
 
 ---
 
-#### Equality and inequality operators
+##### Equality and inequality operators
 The following operators can be used:
 
 `vexpr` <- `is` `value`
@@ -184,7 +207,7 @@ As with the logical operators, the 'natural language' keywords must be surrounde
 
 ---
 
-#### Range operator
+##### Range operator
 `vexpr` <- `ranges from` `value` `to` `value`
 
 `vexpr` <- `{}=` `value` `-` `value`
@@ -198,7 +221,7 @@ The range operator constraints the value to be within the specified range (inclu
 
 ---
 
-#### String matching
+##### String matching
 `vexpr` <- `starts with` `string`
 
 `vexpr` <- `ends with` `string`
@@ -228,7 +251,7 @@ The `matches` and `regex=` operators constraint the value to match the specified
 
 ---
 
-#### Exist
+##### Exist
 `vexpr` <- `exists`
 
 `vexpr` <- `*`
@@ -242,7 +265,7 @@ States that the field should exist.
 
 ---
 
-#### Does not exist
+##### Does not exist
 `vexpr` <- `does not exist`
 
 `vexpr` <- `^`
@@ -256,7 +279,7 @@ States that the field should not exist.
 
 ---
 
-## Fields
+### Fields
 `field` <- `word`
 
 `field` <- `word` `.` `word` `.` ... `.` `word`
@@ -279,7 +302,7 @@ Please note there is a subtle semantical difference between the dot notation and
 
 ---
 
-## Values
+### Values
 A `value` can be one of the following datatypes:
 
 `value` <- `word`
@@ -296,7 +319,7 @@ A `value` can be one of the following datatypes:
 
 ---
 
-### Words
+#### Words
 
 A `word` 
 
@@ -312,7 +335,7 @@ Examples
 
 ---
 
-### Quoted strings
+#### Quoted strings
 
 A `quoted string is a sequence of characters surrounded by double quotes.
 Quotes within the string should be escaped.
@@ -328,7 +351,7 @@ Quotes within the string should be escaped.
 
 ---
 
-### Numbers
+#### Numbers
 
 A `number` can be a signed integers or a float, for example `-4567` or `42.314`.
 
@@ -337,7 +360,7 @@ A `number` can be a signed integers or a float, for example `-4567` or `42.314`.
 
 ---
 
-### Date and time
+#### Date and time
 `datetime` <- `yyyy` `-` `MM` `-` `dd`
 
 `datetime` <- `yyyy` `-` `MM` `-` `dd` `hh` `:` `mm`
@@ -355,7 +378,7 @@ object, which is the number of milliseconds from 1 January 1970 00:00:00 UTC.
 
 ---
 
-### Booleans
+#### Booleans
 A `boolean` can be represented by the keywords `true` and `false`.
 
 **Examples**
@@ -365,7 +388,7 @@ A `boolean` can be represented by the keywords `true` and `false`.
   
 ---
 
-### ObjectIDs
+#### ObjectIDs
 An `objectID` is represented as `0x` followed by 24 hexadecimal characters.
 
 **Examples**
@@ -377,3 +400,5 @@ An `objectID` is represented as `0x` followed by 24 hexadecimal characters.
 Development
 -----------
 hrq2mongoq is developed and maintained by [David de Bos](http://www.debos.eu).
+
+Initial development was sponsored by [dividat GmbH](http://www.dividat.ch) in Schindellegi, Switzerland.
