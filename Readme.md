@@ -49,7 +49,25 @@ Installation
 As easy as npm can be:
 
     $ npm install hrq2mongoq
+    
+ Usage
+------
+Example with [mongoose](http://mongoosejs.com/):
+```
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
+var Person = mongoose.model('Person', yourSchema);
 
+var hrq2mongoq = require('hrq2mongoq');
+var hrq = 'city of person is "Amsterdam" and occupation of person is "studying"';
+
+var mongoq = hrq2mongoq.parse(mongoq);
+// mongoq = { '$and': 
+//   [ { 'person.city': 'Amsterdam' },
+//     { 'person.occupation': 'studying' } ] }
+
+Person.find(mongoq) // people studying in Amsterdam
+```
 
 Human Readable Query Syntax and Semantics
 -----------------------------------------
