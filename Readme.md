@@ -310,10 +310,12 @@ States that the field should not exist.
 ---
 
 ### Sorting and projection
-
 `sorting` <- `field` [`descending`], `field` [`descending`], ..., `field` [`descending`]
+
 `sorting` <- `field` [`descending`] `and` `field` [`descending`] `and` ... `and` `field` [`descending`]
+
 `projection` <- `field`, `field`, ..., `field`
+
 `projection` <- `field` `and` `field` `and` ... `and` `field`
 
 Parsing sorting and projection expressions will return a JSON document which can be used with Mongo's cursor.sort(sort) and db.collection.find(query, projection) respectively.
