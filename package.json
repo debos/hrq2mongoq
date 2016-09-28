@@ -1,8 +1,12 @@
 {
   "name": "hrq2mongoq",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "main": "lib/index",
-  "keywords": ["mongo", "query", "parser"],
+  "keywords": [
+    "mongo",
+    "query",
+    "parser"
+  ],
   "author": {
     "name": "David de Bos",
     "email": "david@debos.eu",
