@@ -1,7 +1,7 @@
 Human Readable Query to Mongo Query (hrq2mongoq)
 ================================================
 
-hrq2mongoq lets you formulate MongoDB queries in a human readable way by 
+hrq2mongoq lets you formulate MongoDB queries in a human readable way by
 transforming HRQs (human readably queries) into MongoDB queries.
 
 <!-- toc -->
@@ -9,12 +9,14 @@ transforming HRQs (human readably queries) into MongoDB queries.
 * [Examples of HRQs](#examples-of-hrqs)
 * [Features](#features)
 * [Installation](#installation)
+* [Usage](#usage)
 * [Human Readable Query Syntax and Semantics](#human-readable-query-syntax-and-semantics)
   * [Expressions](#expressions)
     * [Basic expression](#basic-expression)
     * [Multiple value expressions](#multiple-value-expressions)
     * [Combining expressions with logical operators](#combining-expressions-with-logical-operators)
     * [Value expressions](#value-expressions)
+  * [Sorting and projection](#sorting-and-projection)
   * [Fields](#fields)
   * [Values](#values)
     * [Words](#words)
@@ -25,17 +27,18 @@ transforming HRQs (human readably queries) into MongoDB queries.
     * [ObjectIDs](#objectids)
 * [Development](#development)
 
-<!-- toc stop --> 
+<!-- toc stop -->
 
 Examples of HRQs
 ----------------
-  * city of person is "Amsterdam" and occupation of person is "studying"
-  * person.city="Amsterdam" & person.occupation="studying"
-  
+  * city of person is Amsterdam and occupation of person is studying
+  * person.city = Amsterdam & person.occupation = studying
+  * date of birth descending, surname and firstname
+
 Features
 --------
 
-  * Translate human readable queries into MongoDB queries
+  * Translate human readable queries into MongoDB query, sorting and projection documents
   * Use symbols or words to describe operators  
   * Logical operators: `and`, `or`, `nor` and `not`
   * Comparison operators: `=`, `>`, `<`, `=>`, `=<`, `either...or`, `both...and` and `ranges`
@@ -49,9 +52,9 @@ Installation
 As easy as npm can be:
 
     $ npm install hrq2mongoq
-    
- Usage
-------
+
+Usage
+-----
 Example with [mongoose](http://mongoosejs.com/):
 ```
 var mongoose = require('mongoose');
@@ -59,14 +62,23 @@ mongoose.connect('mongodb://localhost/test');
 var Person = mongoose.model('Person', yourSchema);
 
 var hrq2mongoq = require('hrq2mongoq');
-var hrq = 'city of person is "Amsterdam" and occupation of person is "studying"';
+var hrquery = 'city of person is Amsterdam and occupation of person is studying';
+var hrsort = 'date of birth descending, surname and firstname';
+var hrproj = 'firstname and surname'
 
-var mongoq = hrq2mongoq.parse(mongoq);
-// mongoq = { '$and': 
+var mongoq = hrq2mongoq.parse(hrquery);
+// mongoq = { '$and':
 //   [ { 'person.city': 'Amsterdam' },
 //     { 'person.occupation': 'studying' } ] }
 
-Person.find(mongoq) // people studying in Amsterdam
+var mongos = hrq2mongoq.parse(hrsort);
+// mongos = { 'birth.date': -1, 'surname': 1, 'firstname': 1}
+
+var mongop = hrq2mongoq.parse(hrproj);
+// mongop = { 'firstname': 1, 'surname': 1}
+
+Person.find(mongoq, mongop).sort(mongos);
+// firstname and surname of people studying in Amsterdam, sorted in descending order by date of birth and then in ascending order by surname and first name
 ```
 
 Human Readable Query Syntax and Semantics
@@ -90,8 +102,8 @@ Selects the documents for which the `field` satisfies the single value expressio
 
 #### Multiple value expressions
 
-Instead of providing one value expression, one can provide multiple one with 
-on the two following operators. 
+Instead of providing one value expression, one can provide multiple one with
+on the two following operators.
 
 ---
 
@@ -100,7 +112,7 @@ on the two following operators.
 
 `expression` <- `field` `:` `vexpr` `&` ... `&` `vexpr` `&` `vexpr`
 
-Selects the documents for which the `field` satisfies all the listed value 
+Selects the documents for which the `field` satisfies all the listed value
 expressions.
 
 **Examples**
@@ -115,7 +127,7 @@ expressions.
 
 `expression` <- `field` `:` `vexpr` `|` ... `|` `vexpr` `|` `vexpr`
 
-Selects the documents for which the `field` satisfies at least one of the 
+Selects the documents for which the `field` satisfies at least one of the
 listed value expressions.
 
 **Examples**
@@ -171,7 +183,7 @@ The keyword `nor` must be surrounded by whitespace and it doesn't have a corresp
 **Examples**
 
   * friends is Demeter nor "hair length" is less than 50
-  
+
 ---
 
 ##### Associativity and precedence
@@ -297,6 +309,22 @@ States that the field should not exist.
 
 ---
 
+### Sorting and projection
+
+`sorting` <- `field` [`descending`], `field` [`descending`], ..., `field` [`descending`]
+`sorting` <- `field` [`descending`] `and` `field` [`descending`] `and` ... `and` `field` [`descending`]
+`projection` <- `field`, `field`, ..., `field`
+`projection` <- `field` `and` `field` `and` ... `and` `field`
+
+Parsing sorting and projection expressions will return a JSON document which can be used with Mongo's cursor.sort(sort) and db.collection.find(query, projection) respectively.
+
+**Examples**
+
+  * date of birth descending, surname and firstname
+  * date of birth, surname and firstname
+
+---
+
 ### Fields
 `field` <- `word`
 
@@ -339,7 +367,7 @@ A `value` can be one of the following datatypes:
 
 #### Words
 
-A `word` 
+A `word`
 
   * is a sequence of characters without whitespaces
   * may not contain any of the following special characters: `$` `:` `{` `}` `-` `+` `"` `'` `=` `<` `>` `&` `|` `!` `*` `^` `.` `,`
@@ -385,7 +413,7 @@ A `number` can be a signed integers or a float, for example `-4567` or `42.314`.
 
 `datetime` <- `yyyy` `-` `MM` `-` `dd` `hh` `:` `mm` `:` `ss `
 
-Note that all three formats will internally be converted to a JavaScript Date 
+Note that all three formats will internally be converted to a JavaScript Date
 object, which is the number of milliseconds from 1 January 1970 00:00:00 UTC.
 
 **Examples**
@@ -403,7 +431,7 @@ A `boolean` can be represented by the keywords `true` and `false`.
 
   * "is worth dying for" is true
   * "is worth dying for" is false
-  
+
 ---
 
 #### ObjectIDs

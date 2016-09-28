@@ -624,5 +624,34 @@
     "result": [
       "Aphrodite"
     ]
+  },
+  {
+    "test": "just whitespace",
+    "hrq": "   ",
+    "mongoq": {},
+    "result": [
+      "Aphrodite",
+      "Artemis",
+      "Athena",
+      "BB King",
+      "Demeter",
+      "Eros",
+      "Hera",
+      "Jesus",
+      "Little John",
+      "Maria"
+    ]
+  },
+  {
+    "test": "sorting on one field",
+    "hrq": " date of birth descending",
+    "mongoq": {"birth.date": -1},
+    "result": []
+  },
+  {
+    "test": "sorting on multiple fields",
+    "hrq": " date of birth, of descending and birth"  ,
+    "mongoq": {"birth.date": 1, "of": -1, "birth": 1},
+    "result": []
   }
 ]

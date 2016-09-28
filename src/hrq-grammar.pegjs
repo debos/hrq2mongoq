@@ -3,7 +3,27 @@
   MongoQuery (MongoQ) string
  **/
 
-result = _ expr:expression _ {return expr;}
+result
+= criteria
+/ sorting
+/ projection
+/ emptystring
+
+sorting = _ fields:fieldlist _ {return '{' + fields + '}';}
+projection = _ fields:fieldlist _ {return '{' + fields + '}';}
+emptystring = _ {return '{}';}
+
+fieldlist
+= left:field _ ',' _ right:fieldlist {return left + "," + right;}
+/ left:field __ "and" __ right:fieldlist {return left + "," + right;}
+/ single:field {return single;}
+
+field
+= field:fieldid __ 'descending' {return field + ': -1';}
+/ field:fieldid __ '-1' {return field + ': -1';}
+/ field:fieldid {return field + ': 1';}
+
+criteria = _ expr:expression _ {return expr;}
 
 expression 'expression'
 = head:condition and tail:expression { return '{"$and": [' + head + ', ' + tail + ']}';}
